@@ -1,0 +1,63 @@
+$spotifyGreen1: #1fdf64;
+$spotifyGreen2: #1ed760;
+$spotifyDark: #191414;
+
+
+.ArtistSearchResult{
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: 15px;
+    background-color: $spotifyGreen1;
+    transition: 1000ms;
+    width: 350px;
+    margin-inline: auto;
+
+    img{
+        margin: 1rem;
+        max-height: 64px;
+        max-width: 64px;
+    }
+
+    &:hover{
+        cursor: pointer;
+        box-shadow: 0px 0px 15px 2px $spotifyGreen2;
+        transition: 600ms;
+        color: white;
+        background: $spotifyDark;
+    }
+
+}
+
+.text{
+    margin-left: 2rem;
+
+    .title{
+        font-size: 1.6rem;
+    }
+
+}
+
+.ArtistSearchResultArrows{
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 15px;
+    transition: 1000ms;
+
+    cursor: pointer;
+    box-shadow: 0px 0px 15px 2px $spotifyGreen2;
+    transition: 600ms;
+    color: white;
+    background: $spotifyDark;
+
+    
+    img{
+        margin: 1rem;
+        max-height: 64px;
+        max-width: 64px;
+    }
+
+}

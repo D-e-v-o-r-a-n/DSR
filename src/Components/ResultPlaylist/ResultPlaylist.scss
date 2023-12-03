@@ -1,0 +1,14 @@
+.ResultPlaylistCard{
+    width: 15rem;
+    height: 20rem;
+    background: none;
+    border: 1px solid grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+}
+.cardArtist{
+    color: rgb(148, 146, 146);
+}
