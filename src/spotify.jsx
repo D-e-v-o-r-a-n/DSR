@@ -4,10 +4,10 @@ const CLIENT_ID = secrets.clientID
 export const authEndpoint = 'https://accounts.spotify.com/authorize';
 
 // deploy
-const redirectUri = 'https://dsrp-d0017.web.app/'
+// const redirectUri = 'https://dsrp-d0017.web.app/'
 
 // lokalny developement
-// const redirectUri = 'http://localhost:3000/'
+const redirectUri = 'http://localhost:3000/'
 
 const clientId = CLIENT_ID
 

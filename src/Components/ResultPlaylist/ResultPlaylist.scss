@@ -1,4 +1,5 @@
 .ResultPlaylistCard{
+    position: relative;
     width: 15rem;
     height: 20rem;
     background: none;
@@ -12,3 +13,29 @@
 .cardArtist{
     color: rgb(148, 146, 146);
 }
+
+#roll{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 2rem;
+    height: 2rem;
+    background-color: gray;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 2rem;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-family: 'Kanit', sans-serif;
+    box-shadow: none;
+  
+    transition: 600ms;
+    &:hover{
+      background-color: red;
+      box-shadow: 0px 0px 15px 3px red;
+      transition: 600ms;
+    }
+}
+  

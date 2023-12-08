@@ -121,9 +121,9 @@ function App() {
   , [artistQuery, spotifyToken])
 
 
-    useEffect(()=>{
-      if (createdPlaylist)console.log(recomendationsPlaylist, 'useEffect')
-    },[createdPlaylist])
+    // useEffect(()=>{
+    //   if (createdPlaylist)console.log(recomendationsPlaylist, 'useEffect')
+    // },[createdPlaylist])
 
 
 
@@ -135,7 +135,6 @@ function App() {
   function submitArtist(id){
     if(artist_ref.current != undefined) artist_ref.current.value = ''
     setReferenceArtists(referenceArtists => [...referenceArtists, id])
-    console.log(referenceArtists)
     artistFeedback_ref.current.style.visibility = 'visible'
     setArtistFeedback("Artist included")
     artistFeedback_ref.current.style.color = 'lime'
@@ -146,7 +145,6 @@ function App() {
   }
   function submitGenre(genre){
     setReferenceGenres(referenceGenres => [...referenceGenres, genre])
-    console.log(referenceGenres)
     genreFeedback_ref.current.style.visibility = 'visible'
     setGenreFeedback("Genre included")
     genreFeedback_ref.current.style.color = 'lime'
@@ -157,7 +155,6 @@ function App() {
   function submitTrack(track){
     if(tracks_ref.current != undefined) tracks_ref.current.value = ''
     setReferenceTracks(referenceTracks => [...referenceTracks, track])
-    console.log(referenceTracks)
     trackFeedback_ref.current.style.visibility = 'visible'
     setTrackFeedback("Track included")
     trackFeedback_ref.current.style.color = 'lime'
@@ -167,16 +164,14 @@ function App() {
 
   } 
 
-  async function recommendFunction(){
+  async function recommendFunction(number=20){
     let seedArtists = referenceArtists;
     let seedGenres = referenceGenres;
     let seedTracks = referenceTracks;
     await spotify.getRecommendations({seed_artists: seedArtists,seed_genres: seedGenres, seed_tracks: seedTracks})
     .then(function(data) {
-      console.log(data.seeds, 'seeds')
       setRecomendationsPlaylist(
         data.tracks.map(track=>{
-          console.log(track)
           const smallestImage = track.album.images.reduce((
             smallest, image) => {
               if(image.height < smallest.height) return image
@@ -209,6 +204,36 @@ function App() {
   function rerollPlaylist(){
     recommendFunction()
   }
+
+  async function rerollTrack(returnedValue){
+    let swappedSong;
+     setRecomendationsPlaylist(current =>
+      current.filter(track => {
+        return track !== returnedValue;
+      }))
+    await spotify.getRecommendations({seed_artists: referenceArtists,seed_genres: referenceGenres, seed_tracks: referenceTracks, limit: 1,})
+    .then(function(data) {
+      swappedSong = (
+        data.tracks.map(track=>{
+          const smallestImage = track.album.images.reduce((
+            smallest, image) => {
+              if(image.height < smallest.height) return image
+              return smallest
+            }, track.album.images[0])
+          return{
+            name: track.name,
+            artist: track.artists[0].name,
+            uri: track.uri,
+            imageUrl: smallestImage.url
+          }
+        })
+      )
+      setRecomendationsPlaylist(recomendationsPlaylist => [...recomendationsPlaylist, swappedSong[0]])    
+    }, function(err) {
+      console.error(err); // https://api.spotify.com/v1/recommendations?seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA
+    });
+    }
+
   function reset(){
     setReferenceArtists([])
     setReferenceGenres([])
@@ -272,10 +297,14 @@ function App() {
       <div style={{margin: '1rem'}}>
         <div className='resultPlaylist'>
           {recomendationsPlaylist.map(track=>(
-            <ResultPlaylist  track={track}/>
+            <ResultPlaylist  track={track} reroll={rerollTrack}/>
           ))}
         </div>
-        <button onClick={savePlaylist}>Save this playlist</button>
+        <button
+        onClick={() => {
+          savePlaylist();
+          alert("Playlist saved on your profile");
+        }}>Save this playlist</button>
         <button onClick={rerollPlaylist}>Try again</button>
         <button onClick={reset}>Change references</button>
       </div>
